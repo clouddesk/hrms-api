@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const { Employee, validate } = require('../models/employee');
 
+// sort=${sort}&order=${order}&page=${page + 1}
+
 exports.createEmployee = async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).json(error.details[0].message);
