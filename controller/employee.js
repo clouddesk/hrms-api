@@ -1,11 +1,10 @@
 const _ = require('lodash');
 const { Employee, validate } = require('../models/employee');
-
-// sort=${sort}&order=${order}&page=${page + 1}
+const Op = require('sequelize').Op;
 
 exports.createEmployee = async (req, res) => {
   const { error } = validate(req.body);
-  if (error) return res.status(400).json(error.details[0].message);
+  if (error) return res.status(400).send(error.details[0].message);
 
   let employee = new Employee({
     firstName: req.body.firstName,
@@ -58,20 +57,59 @@ exports.deleteEmployee = async (req, res) => {
 };
 
 exports.getAllEmployees = async (req, res) => {
-  res.json(
-    await Employee.findAll({
-      attributes: [
-        'id',
-        'firstName',
-        'lastName',
-        'personalId',
-        'birthDate',
-        'mobilePhone',
-        'createdAt',
-        'updatedAt'
-      ]
-    })
-  );
+  let limit = +req.query.limit || 10;
+  let offset = limit * req.query.page;
+  
+  const employee_attributes = [
+    'id',
+    'firstName',
+    'lastName',
+    'personalId',
+    'birthDate',
+    'mobilePhone',
+    'createdAt',
+    'updatedAt'
+  ];
+
+  if (req.query.term === 'undefined') {
+    Employee.findAndCountAll().then(data => {
+      Employee.findAll({
+        attributes: employee_attributes,
+        limit: limit,
+        offset: offset
+      })
+        .then(employees => {
+          res.status(200).json({ items: employees, total_count: data.count });
+        })
+        .catch(error => {
+          console.log(error.details[0].message);
+          res.status(500).send('Internal Server Error');
+        });
+    });
+  } else {
+    const query = `%${req.query.term}%`;
+    const term = {
+      [Op.or]: {
+        firstName: { [Op.like]: query },
+        lastName: { [Op.like]: query }
+      }
+    };  
+    Employee.findAndCountAll({ where: term }).then(data => {
+      Employee.findAll({
+        where: term,
+        attributes: employee_attributes,
+        limit: limit,
+        offset: offset
+      })
+        .then(employees => {
+          res.status(200).json({ items: employees, total_count: data.count });
+        })
+        .catch(error => {
+          console.log(error.details[0].message);
+          res.status(500).send('Internal Server Error');
+        });
+    });
+  }
 };
 
 exports.getEmployee = async (req, res) => {
