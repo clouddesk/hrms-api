@@ -26,7 +26,10 @@ const Employee = sequelize.define('employee', {
     type: Sequelize.DATEONLY,
     allowNull: false
   },
-  mobilePhone: Sequelize.STRING
+  mobilePhone: Sequelize.STRING,
+  personId: Sequelize.STRING,
+  employee_photo_id: Sequelize.STRING,
+  persistentFaceId: Sequelize.STRING,
 });
 
 function validateEmployee(employee) {
@@ -46,7 +49,10 @@ function validateEmployee(employee) {
     birthDate: Joi.required(),
     mobilePhone: Joi.string()
       .min(9)
-      .max(9)
+      .max(9),
+    personId: Joi.string(),
+    employee_photo_id: Joi.string(),
+    persistentFaceId: Joi.string(),
   };
 
   return Joi.validate(employee, schema);

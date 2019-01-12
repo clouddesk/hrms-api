@@ -40,6 +40,55 @@ exports.updateEmployee = async (req, res) => {
   res.status(200).json(employee);
 };
 
+exports.addPersonToEmployee = async (req, res) => {
+
+  let employee = await Employee.findByPk(+req.params.id);
+  if (!employee)
+    return res
+      .status(404)
+      .json(`Employee with ID ${req.params.id} doesn't exist`);
+  employee = await Employee.update(
+    {
+      personId: req.body.personId
+    },
+    { where: { id: +req.params.id } }
+  );
+  res.status(200).json(employee);
+};
+
+exports.addFaceToEmployee = async (req, res) => {
+
+  let employee = await Employee.findByPk(+req.params.id);
+  if (!employee)
+    return res
+      .status(404)
+      .json(`Employee with ID ${req.params.id} doesn't exist`);
+  employee = await Employee.update(
+    {
+      persistentFaceId: req.body.persistentFaceId
+    },
+    { where: { id: +req.params.id } }
+  );
+  res.status(200).json(employee);
+};
+
+exports.addPhotoToEmployee = async (req, res) => {
+
+  let employee = await Employee.findByPk(+req.params.id);
+  if (!employee)
+    return res
+      .status(404)
+      .json(`Employee with ID ${req.params.id} doesn't exist`);
+  employee = await Employee.update(
+    {
+      employee_photo_id: req.body.file_id.id
+    },
+    { where: { id: +req.params.id } }
+  ).catch(error => console.log(error));
+  res.status(200).json(employee);
+};
+
+
 exports.deleteEmployee = async (req, res) => {
   let employee = await Employee.findByPk(+req.params.id)
     .then(employee => {
