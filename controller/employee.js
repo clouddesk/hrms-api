@@ -179,6 +179,9 @@ exports.getEmployee = async (req, res) => {
       'personalId',
       'birthDate',
       'mobilePhone',
+      'personId',
+      'employee_photo_id',
+      'persistentFaceId',
       'createdAt',
       'updatedAt'
     ]
