@@ -50,3 +50,10 @@ exports.downloadFile = async (req, res) => {
       res.json({ msg: 'Error', detail: err });
     });
 };
+
+exports.deleteFile = async (req, res) => {
+  file = await File.destroy({ where: { id: +req.params.id } });
+  if (file) {
+    res.status(200).json(file);
+  }
+};

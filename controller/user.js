@@ -10,7 +10,7 @@ exports.createUser = async (req, res) => {
   if (user.length > 0)
     return res.status(400).json("User already registered...");
 
-  user = new User(_.pick(req.body, ["name", "email", "password"]));
+  user = new User(_.pick(req.body, ["name", "email", "password", "companyId"]));
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
@@ -18,11 +18,12 @@ exports.createUser = async (req, res) => {
   const token = generateAuthToken({
     id: user["dataValues"].id,
     name: user["dataValues"].name,
-    email: user["dataValues"].email
+    email: user["dataValues"].email,
+    companyId: user["dataValues"].companyId,
   });
   res
     .header("x-auth-token", token)
-    .json(_.pick(user["dataValues"], ["id", "name", "email"]));
+    .json(_.pick(user["dataValues"], ["id", "name", "email", "companyId"]));
 };
 
 exports.updateUser = async (req, res) => {

@@ -15,7 +15,7 @@ employees.post("/", auth, authAdmin, employeesController.createEmployee);
 
 employees.post("/addpersonid/:id", auth, authAdmin, employeesController.addPersonToEmployee);
 
-employees.post("/addpersistentfaceid/:id", auth, authAdmin, employeesController.addFaceToEmployee);
+employees.post("/addpersistedfaceid/:id", auth, authAdmin, employeesController.addFaceToEmployee);
 
 employees.post("/linkphoto/:id", auth, authAdmin, employeesController.addPhotoToEmployee);
 

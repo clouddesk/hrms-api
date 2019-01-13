@@ -16,7 +16,8 @@ exports.getToken = async (req, res) => {
   const token = generateAuthToken({
     id: user.id,
     name: user.name,
-    email: user.email
+    email: user.email,
+    companyId: user.companyId
   });
   res.json(token);
 };
@@ -31,7 +32,8 @@ function validate(req) {
     password: Joi.string()
       .min(8)
       .max(1024)
-      .required()
+      .required(),
+    companyId: Joi.string()
   };
 
   return Joi.validate(req, schema);

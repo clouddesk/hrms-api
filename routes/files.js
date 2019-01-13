@@ -9,10 +9,12 @@ const files = express.Router();
 
 upload = require("../config/multer.config");
 
-files.get("/", filesController.listAllFiles);
+files.get("/", auth, filesController.listAllFiles);
 
-files.post("/", upload.single("file"), filesController.uploadFile);
+files.get("/:id", auth, filesController.downloadFile);
 
-files.get("/:id", filesController.downloadFile);
+files.post("/", auth, upload.single("file"), filesController.uploadFile);
+
+files.delete("/:id", auth, filesController.deleteFile);
 
 module.exports = files;

@@ -28,8 +28,9 @@ const Employee = sequelize.define('employee', {
   },
   mobilePhone: Sequelize.STRING,
   personId: Sequelize.STRING,
-  employee_photo_id: Sequelize.STRING,
-  persistentFaceId: Sequelize.STRING,
+  personGroupId: Sequelize.STRING,
+  employeePhotoFileId: Sequelize.STRING,  // employeePhotoFileId
+  persistedFaceId: Sequelize.STRING,
 });
 
 function validateEmployee(employee) {
@@ -51,8 +52,9 @@ function validateEmployee(employee) {
       .min(9)
       .max(9),
     personId: Joi.string(),
-    employee_photo_id: Joi.string(),
-    persistentFaceId: Joi.string(),
+    personGroupId: Joi.string(),
+    employeePhotoFileId: Joi.string(),
+    persistedFaceId: Joi.string(),
   };
 
   return Joi.validate(employee, schema);

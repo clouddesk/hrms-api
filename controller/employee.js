@@ -11,7 +11,8 @@ exports.createEmployee = async (req, res) => {
     lastName: req.body.lastName,
     personalId: req.body.personalId,
     birthDate: req.body.birthDate,
-    mobilePhone: req.body.mobilePhone
+    mobilePhone: req.body.mobilePhone,
+    personGroupId: req.user.companyId
   });
   await employee.save();
 
@@ -65,7 +66,7 @@ exports.addFaceToEmployee = async (req, res) => {
       .json(`Employee with ID ${req.params.id} doesn't exist`);
   employee = await Employee.update(
     {
-      persistentFaceId: req.body.persistentFaceId
+      persistedFaceId: req.body.persistedFaceId
     },
     { where: { id: +req.params.id } }
   );
@@ -81,7 +82,7 @@ exports.addPhotoToEmployee = async (req, res) => {
       .json(`Employee with ID ${req.params.id} doesn't exist`);
   employee = await Employee.update(
     {
-      employee_photo_id: req.body.file_id.id
+      employeePhotoFileId: req.body.file_id.id
     },
     { where: { id: +req.params.id } }
   ).catch(error => console.log(error));
@@ -180,8 +181,9 @@ exports.getEmployee = async (req, res) => {
       'birthDate',
       'mobilePhone',
       'personId',
-      'employee_photo_id',
-      'persistentFaceId',
+      'personGroupId',
+      'employeePhotoFileId',
+      'persistedFaceId',
       'createdAt',
       'updatedAt'
     ]
