@@ -42,7 +42,6 @@ exports.updateEmployee = async (req, res) => {
 };
 
 exports.addPersonToEmployee = async (req, res) => {
-
   let employee = await Employee.findByPk(+req.params.id);
   if (!employee)
     return res
@@ -58,7 +57,6 @@ exports.addPersonToEmployee = async (req, res) => {
 };
 
 exports.addFaceToEmployee = async (req, res) => {
-
   let employee = await Employee.findByPk(+req.params.id);
   if (!employee)
     return res
@@ -73,8 +71,22 @@ exports.addFaceToEmployee = async (req, res) => {
   res.status(200).json(employee);
 };
 
-exports.addPhotoToEmployee = async (req, res) => {
+exports.removeFaceFromEmployee = async (req, res) => {
+  let employee = await Employee.findByPk(+req.params.id);
+  if (!employee)
+    return res
+      .status(404)
+      .json(`Employee with ID ${req.params.id} doesn't exist`);
+  employee = await Employee.update(
+    {
+      persistedFaceId: ''
+    },
+    { where: { id: +req.params.id } }
+  );
+  res.status(200).json(employee);
+};
 
+exports.addPhotoToEmployee = async (req, res) => {
   let employee = await Employee.findByPk(+req.params.id);
   if (!employee)
     return res
@@ -89,6 +101,20 @@ exports.addPhotoToEmployee = async (req, res) => {
   res.status(200).json(employee);
 };
 
+exports.removePhotoFromEmployee = async (req, res) => {
+  let employee = await Employee.findByPk(+req.params.id);
+  if (!employee)
+    return res
+      .status(404)
+      .json(`Employee with ID ${req.params.id} doesn't exist`);
+  employee = await Employee.update(
+    {
+      employeePhotoFileId: ''
+    },
+    { where: { id: +req.params.id } }
+  ).catch(error => console.log(error));
+  res.status(200).json(employee);
+};
 
 exports.deleteEmployee = async (req, res) => {
   let employee = await Employee.findByPk(+req.params.id)
@@ -109,7 +135,7 @@ exports.deleteEmployee = async (req, res) => {
 exports.getAllEmployees = async (req, res) => {
   let limit = +req.query.limit || 10;
   let offset = limit * req.query.page;
-  
+
   const employee_attributes = [
     'id',
     'firstName',
@@ -143,7 +169,7 @@ exports.getAllEmployees = async (req, res) => {
         firstName: { [Op.like]: query },
         lastName: { [Op.like]: query }
       }
-    };  
+    };
     Employee.findAndCountAll({ where: term }).then(data => {
       Employee.findAll({
         where: term,

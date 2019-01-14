@@ -17,7 +17,11 @@ employees.post("/addpersonid/:id", auth, authAdmin, employeesController.addPerso
 
 employees.post("/addpersistedfaceid/:id", auth, authAdmin, employeesController.addFaceToEmployee);
 
+employees.delete("/removepersistedfaceid/:id", auth, authAdmin, employeesController.removeFaceFromEmployee);
+
 employees.post("/linkphoto/:id", auth, authAdmin, employeesController.addPhotoToEmployee);
+
+employees.delete("/unlinkphoto/:id", auth, authAdmin, employeesController.removePhotoFromEmployee);
 
 employees.post("/:id", auth, authAdmin, employeesController.updateEmployee);
 
