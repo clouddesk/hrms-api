@@ -144,6 +144,7 @@ exports.getAllEmployees = async (req, res) => {
     'personalId',
     'birthDate',
     'mobilePhone',
+    'employeePhotoFileId',
     'createdAt',
     'updatedAt'
   ];
@@ -199,22 +200,6 @@ exports.getEmployee = async (req, res) => {
       }
     })
     .catch(err => console.log(err));
-  employee = await Employee.findByPk(req.params.id, {
-    attributes: [
-      'id',
-      'firstName',
-      'lastName',
-      'personalId',
-      'birthDate',
-      'mobilePhone',
-      'personId',
-      'personGroupId',
-      'employeePhotoFileId',
-      'persistedFaceId',
-      'companyId',
-      'createdAt',
-      'updatedAt'
-    ]
-  });
+  employee = await Employee.findByPk(req.params.id);
   res.json(employee);
 };
