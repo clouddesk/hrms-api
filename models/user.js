@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../startup/db');
+const { Company } = require('../models/company');
 
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -23,9 +24,6 @@ const User = sequelize.define('user', {
   password: {
     type: Sequelize.STRING,
     allowNull: false
-  },
-  companyId: {
-    type: Sequelize.STRING
   }
 });
 
@@ -44,7 +42,7 @@ function validateUser(user) {
       .min(8)
       .max(1024)
       .required(),
-    companyId: Joi.string()
+    companyId: Joi.number()
   };
 
   return Joi.validate(user, schema);
@@ -56,6 +54,8 @@ const generateAuthToken = function(payload) {
   });
   return token;
 };
+
+User.belongsTo(Company);
 
 exports.generateAuthToken = generateAuthToken;
 

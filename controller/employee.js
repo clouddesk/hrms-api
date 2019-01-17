@@ -12,7 +12,8 @@ exports.createEmployee = async (req, res) => {
     personalId: req.body.personalId,
     birthDate: req.body.birthDate,
     mobilePhone: req.body.mobilePhone,
-    personGroupId: req.user.companyId
+    personGroupId: req.user.companyId,
+    companyId: req.user.companyId
   });
   await employee.save();
 
@@ -210,6 +211,7 @@ exports.getEmployee = async (req, res) => {
       'personGroupId',
       'employeePhotoFileId',
       'persistedFaceId',
+      'companyId',
       'createdAt',
       'updatedAt'
     ]

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../startup/db');
+const { Employee } = require('../models/employee');
 
 const Joi = require('joi');
 
@@ -26,6 +27,8 @@ function validateCompany(company) {
 
   return Joi.validate(company, schema);
 }
+
+Company.hasMany(Employee);
 
 exports.Company = Company;
 exports.validate = validateCompany;

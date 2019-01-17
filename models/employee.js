@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../startup/db');
+const { Attendance } = require('../models/attendance');
 
 const Joi = require('joi');
 
@@ -29,8 +30,8 @@ const Employee = sequelize.define('employee', {
   mobilePhone: Sequelize.STRING,
   personId: Sequelize.STRING,
   personGroupId: Sequelize.STRING,
-  employeePhotoFileId: Sequelize.STRING,  // employeePhotoFileId
-  persistedFaceId: Sequelize.STRING,
+  employeePhotoFileId: Sequelize.STRING,
+  persistedFaceId: Sequelize.STRING
 });
 
 function validateEmployee(employee) {
@@ -54,11 +55,13 @@ function validateEmployee(employee) {
     personId: Joi.string(),
     personGroupId: Joi.string(),
     employeePhotoFileId: Joi.string(),
-    persistedFaceId: Joi.string(),
+    persistedFaceId: Joi.string()
   };
 
   return Joi.validate(employee, schema);
 }
+
+Employee.hasMany(Attendance);
 
 exports.Employee = Employee;
 exports.validate = validateEmployee;
