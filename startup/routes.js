@@ -1,5 +1,7 @@
 const express = require("express");
 const users = require("../routes/users");
+const projects = require("../routes/projects");
+const locations = require("../routes/locations");
 const employees = require("../routes/employees");
 const attendance = require("../routes/attendance");
 const files = require("../routes/files");
@@ -17,6 +19,8 @@ module.exports = function(app) {
   app.use(cors(corsOptions));
   app.use(express.json());
   app.use("/api/users", users);
+  app.use("/api/projects", projects);
+  app.use("/api/locations", locations);
   app.use("/api/employees", employees);
   app.use("/api/attendance", attendance);
   app.use("/api/files", files);

@@ -3,15 +3,15 @@ const { Attendance, validate } = require('../models/attendance');
 const Sequelize = require('sequelize');
 
 exports.createEvent = async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   let attendance = new Attendance({
     eventTypeId: req.body.eventTypeId,
     position: Sequelize.fn(
       'Point',
-      req.body.point.longitude,
-      req.body.point.latitude
+      req.body.position.longitude,
+      req.body.position.latitude
     ),
     employeeId: req.body.employeeId
   });

@@ -22,7 +22,8 @@ const Attendance = sequelize.define('attendance', {
 function validateAttendance(attendance) {
   const schema = {
     eventTypeId: Joi.number().required(),
-    location: Joi.string()
+    position: Joi.any(),
+    employeeId: Joi.number()
   };
 
   return Joi.validate(attendance, schema);

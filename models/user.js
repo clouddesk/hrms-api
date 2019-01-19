@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../startup/db');
 const { Company } = require('../models/company');
+const { Project } = require('../models/project');
 
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -56,6 +57,8 @@ const generateAuthToken = function(payload) {
 };
 
 User.belongsTo(Company);
+User.belongsToMany(Project, { through: 'UserProject' });
+Project.belongsToMany(User, { through: 'UserProject' });
 
 exports.generateAuthToken = generateAuthToken;
 

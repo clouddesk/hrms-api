@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../startup/db');
-const { Employee } = require('../models/employee');
-const { Project } = require('../models/project');
 const { Location } = require('../models/location');
+const { Attendance } = require('../models/attendance');
+const { Employee } = require('../models/employee');
 
 const Joi = require('joi');
 
-const Company = sequelize.define('company', {
+const Project = sequelize.define('project', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -19,20 +19,22 @@ const Company = sequelize.define('company', {
   }
 });
 
-function validateCompany(company) {
+function validateProject(project) {
   const schema = {
     name: Joi.string()
       .min(3)
       .max(255)
-      .required()
+      .required(),
+    locationId: Joi.any()
   };
 
-  return Joi.validate(company, schema);
+  return Joi.validate(project, schema);
 }
 
-Company.hasMany(Employee);
-Company.hasMany(Project);
-Company.hasMany(Location);
+Project.belongsTo(Location);
 
-exports.Company = Company;
-exports.validate = validateCompany;
+Project.hasMany(Employee);
+Project.hasMany(Attendance);
+
+exports.Project = Project;
+exports.validate = validateProject;
