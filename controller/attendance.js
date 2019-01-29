@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const { Attendance, validate } = require('../models/attendance');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.createEvent = async (req, res) => {
   const { error } = validate(req.body);
@@ -13,7 +14,8 @@ exports.createEvent = async (req, res) => {
       req.body.position.longitude,
       req.body.position.latitude
     ),
-    employeeId: req.body.employeeId
+    employeeId: req.body.employeeId,
+    projectId: req.body.projectId
   });
   await attendance.save();
 

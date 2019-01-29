@@ -23,6 +23,7 @@ function validateAttendance(attendance) {
   const schema = {
     eventTypeId: Joi.number().required(),
     position: Joi.any(),
+    projectId: Joi.any(),
     employeeId: Joi.number()
   };
 

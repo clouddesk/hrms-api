@@ -54,6 +54,7 @@ function validateEmployee(employee) {
       .max(9),
     personId: Joi.string(),
     personGroupId: Joi.string(),
+    projectId: Joi.number(),
     employeePhotoFileId: Joi.string(),
     persistedFaceId: Joi.string()
   };
@@ -62,6 +63,7 @@ function validateEmployee(employee) {
 }
 
 Employee.hasMany(Attendance);
+Attendance.belongsTo(Employee);
 
 exports.Employee = Employee;
 exports.validate = validateEmployee;

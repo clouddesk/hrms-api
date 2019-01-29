@@ -13,7 +13,8 @@ exports.createEmployee = async (req, res) => {
     birthDate: req.body.birthDate,
     mobilePhone: req.body.mobilePhone,
     personGroupId: req.user.companyId,
-    companyId: req.user.companyId
+    companyId: req.user.companyId,
+    projectId: req.body.projectId
   });
   await employee.save();
 
@@ -35,7 +36,8 @@ exports.updateEmployee = async (req, res) => {
       lastName: req.body.lastName,
       personalId: req.body.personalId,
       birthDate: req.body.birthDate,
-      mobilePhone: req.body.mobilePhone
+      mobilePhone: req.body.mobilePhone,
+      projectId: +req.body.projectId,
     },
     { where: { id: +req.params.id } }
   );
