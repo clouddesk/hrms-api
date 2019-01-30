@@ -16,6 +16,45 @@ exports.createProject = async (req, res) => {
   res.json(project);
 };
 
+exports.updateProject = async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).json(error.details[0].message);
+
+  let project = await Project.findByPk(+req.params.id);
+  if (!project)
+    return res
+      .status(404)
+      .json(`Project with ID ${req.params.id} doesn't exist`);
+  
+  console.log(req.body.name)
+  console.log(req.body.locationId)
+  project = await Project.update(
+    {
+      name: req.body.name,
+      locationId: req.body.locationId,
+    },
+    { where: { id: +req.params.id } }
+  );
+  console.log(project);
+  res.status(200).json(project);
+};
+
+exports.deleteProject = async (req, res) => {
+  let project = await Project.findByPk(+req.params.id)
+    .then(project => {
+      if (!project) {
+        return res
+          .status(404)
+          .json(`Project with the given ID ${req.params.id} was not found...`);
+      }
+    })
+    .catch(err => console.log(err));
+    project = await Project.destroy({ where: { id: +req.params.id } });
+  if (project) {
+    res.status(200).json(project);
+  }
+};
+
 exports.getProject = async (req, res) => {
   let project = await Project.findByPk(+req.params.id)
     .then(project => {

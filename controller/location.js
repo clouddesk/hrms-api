@@ -22,6 +22,22 @@ exports.createLocation = async (req, res) => {
   res.json(location);
 };
 
+exports.deleteLocation = async (req, res) => {
+  let location = await Location.findByPk(+req.params.id)
+    .then(location => {
+      if (!location) {
+        return res
+          .status(404)
+          .json(`Location with the given ID ${req.params.id} was not found...`);
+      }
+    })
+    .catch(err => console.log(err));
+    location = await Location.destroy({ where: { id: +req.params.id } });
+  if (location) {
+    res.status(200).json(location);
+  }
+};
+
 exports.getLocation = async (req, res) => {
   let location = await Location.findByPk(+req.params.id)
     .then(location => {
