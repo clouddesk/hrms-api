@@ -3,11 +3,13 @@ const { Attendance, validate } = require('../models/attendance');
 const { Employee } = require('../models/employee');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const casbin = require('../startup/casbin');
 
 exports.attendance = async (req, res) => {
-  console.log(req.body.fromDate);
-  console.log(req.body.toDate);
-  console.log(req.body.projectId);
+  const enforcer = await casbin();
+  if (await !enforcer.enforce(req.user.id, 'Model_Attendance', 'read'))
+    return res.status(403).send('Access forbidden!');
+  
   const dateRange = {
     [Op.between]: [
       req.body.fromDate,
@@ -20,6 +22,5 @@ exports.attendance = async (req, res) => {
     }],
     where: { createdAt: dateRange, projectId: req.body.projectId }
   });
-  console.log(report);
   res.send(report);
 };

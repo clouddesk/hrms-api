@@ -8,7 +8,7 @@ const users = express.Router();
 
 users.get("/me", auth, userController.getUserProfile);
 
-users.get("/", auth, userController.getUsers);
+users.get("/", auth, authAdmin, userController.getUsers);
 
 users.post("/", userController.createUser);
 

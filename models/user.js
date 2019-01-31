@@ -14,7 +14,11 @@ const User = sequelize.define('user', {
     allowNull: false,
     primaryKey: true
   },
-  name: {
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  lastName: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -30,8 +34,12 @@ const User = sequelize.define('user', {
 
 function validateUser(user) {
   const schema = {
-    name: Joi.string()
-      .min(5)
+    firstName: Joi.string()
+      .min(3)
+      .max(50)
+      .required(),
+    lastName: Joi.string()
+      .min(3)
       .max(50)
       .required(),
     email: Joi.string()

@@ -15,7 +15,8 @@ exports.getToken = async (req, res) => {
 
   const token = generateAuthToken({
     id: user.id,
-    name: user.name,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
     companyId: user.companyId
   });
