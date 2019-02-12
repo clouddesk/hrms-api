@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const Joi = require('joi');
 
+const { Group }  = require('../models/group')
+
 const User = sequelize.define('user', {
   id: {
     type: Sequelize.INTEGER,
@@ -51,6 +53,7 @@ function validateUser(user) {
       .min(8)
       .max(1024)
       .required(),
+    groupId: Joi.number(),
     companyId: Joi.number()
   };
 
@@ -65,6 +68,7 @@ const generateAuthToken = function(payload) {
 };
 
 User.belongsTo(Company);
+User.belongsTo(Group);
 User.belongsToMany(Project, { through: 'UserProject' });
 Project.belongsToMany(User, { through: 'UserProject' });
 

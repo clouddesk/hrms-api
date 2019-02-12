@@ -1,7 +1,5 @@
 const auth = require("../middleware/auth");
 
-const authAdmin = require("../middleware/admin");
-
 const filesController = require("../controller/file");
 
 const express = require("express");

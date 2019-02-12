@@ -7,7 +7,7 @@ const menuController = require("../controller/menu");
 const express = require("express");
 const menu = express.Router();
 
-menu.get("/", menuController.getMenu);
+menu.get("/", auth, menuController.getMenu);
 
 menu.post("/", auth, authAdmin, menuController.createMenuItem);
 

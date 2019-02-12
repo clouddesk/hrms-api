@@ -25,17 +25,14 @@ exports.updateProject = async (req, res) => {
     return res
       .status(404)
       .json(`Project with ID ${req.params.id} doesn't exist`);
-  
-  console.log(req.body.name)
-  console.log(req.body.locationId)
+
   project = await Project.update(
     {
       name: req.body.name,
-      locationId: req.body.locationId,
+      locationId: req.body.locationId
     },
     { where: { id: +req.params.id } }
   );
-  console.log(project);
   res.status(200).json(project);
 };
 
@@ -49,7 +46,7 @@ exports.deleteProject = async (req, res) => {
       }
     })
     .catch(err => console.log(err));
-    project = await Project.destroy({ where: { id: +req.params.id } });
+  project = await Project.destroy({ where: { id: +req.params.id } });
   if (project) {
     res.status(200).json(project);
   }
@@ -74,6 +71,5 @@ exports.getAllProjects = async (req, res) => {
     where: { companyId: req.user.companyId },
     include: [{ model: Location }]
   });
-  console.log(project);
   res.json(project);
 };

@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const { User, validate, generateAuthToken } = require('../models/user');
+const { Group } = require('../models/group');
 const Op = require('sequelize').Op;
+const casbin = require('../startup/casbin');
 
 exports.createUser = async (req, res) => {
   const { error } = validate(req.body);
@@ -12,19 +14,31 @@ exports.createUser = async (req, res) => {
     return res.status(400).json('User already registered...');
 
   user = new User(
-    _.pick(req.body, [
-      'firstName',
-      'lastName',
-      'email',
-      'password',
-      'companyId'
-    ])
+    _.pick(req.body, ['firstName', 'lastName', 'email', 'groupId', 'password'])
   );
+  if (req.user) {
+    user.companyId = req.user.companyId;
+  }
+  if (!req.user) {
+    await Group.create({
+      name: 'administrators',
+      description: 'Administration of the system',
+      level: 100,
+      state: true
+    }).then(group => {
+      user.groupId = group.id;
+      user.companyId = 1;
+    });
+  }
+
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
 
-  const token = generateAuthToken({
+  const enforcer = await casbin();
+  await enforcer.addRoleForUser(user.id, 'group_' + user.groupId);
+
+  const token = await generateAuthToken({
     id: user['dataValues'].id,
     firstName: user['dataValues'].firstName,
     lastName: user['dataValues'].lastName,
@@ -39,6 +53,7 @@ exports.createUser = async (req, res) => {
         'firstName',
         'lastName',
         'email',
+        'groupId',
         'companyId'
       ])
     );
@@ -52,17 +67,15 @@ exports.updateUser = async (req, res) => {
           .status(404)
           .json('The user with the given ID was not found.');
       } else {
-        User.update({
-          firstName: req.body.firstName,
-          lastname: req.body.lastName
-        });
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.save();
+        res.json(
+          _.pick(user['dataValues'], ['id', 'firstName', 'lastName', 'email'])
+        );
       }
     })
     .catch(err => console.log(err));
-
-  res.json(
-    _.pick(user['dataValues'], ['id', 'firstName', 'lastName', 'email'])
-  );
 };
 
 exports.deleteUser = async (req, res) => {
@@ -150,7 +163,15 @@ exports.getUsers = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   const user = await User.findByPk(req.user.id, {
-    attributes: ['firstName', 'lastName', 'email', 'createdAt', 'updatedAt']
+    attributes: [
+      'firstName',
+      'lastName',
+      'email',
+      'groupId',
+      'companyId',
+      'createdAt',
+      'updatedAt'
+    ]
   });
   res.json(user);
 };

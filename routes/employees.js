@@ -1,7 +1,5 @@
 const auth = require("../middleware/auth");
 
-const authAdmin = require("../middleware/admin");
-
 const employeesController = require("../controller/employee");
 
 const express = require("express");
@@ -11,20 +9,20 @@ employees.get("/", auth, employeesController.getAllEmployees);
 
 employees.get("/:id", auth, employeesController.getEmployee);
 
-employees.post("/", auth, authAdmin, employeesController.createEmployee);
+employees.post("/", auth, employeesController.createEmployee);
 
-employees.post("/addpersonid/:id", auth, authAdmin, employeesController.addPersonToEmployee);
+employees.post("/addpersonid/:id", auth, employeesController.addPersonToEmployee);
 
-employees.post("/addpersistedfaceid/:id", auth, authAdmin, employeesController.addFaceToEmployee);
+employees.post("/addpersistedfaceid/:id", auth, employeesController.addFaceToEmployee);
 
-employees.delete("/removepersistedfaceid/:id", auth, authAdmin, employeesController.removeFaceFromEmployee);
+employees.delete("/removepersistedfaceid/:id", auth, employeesController.removeFaceFromEmployee);
 
-employees.post("/linkphoto/:id", auth, authAdmin, employeesController.addPhotoToEmployee);
+employees.post("/linkphoto/:id", auth, employeesController.addPhotoToEmployee);
 
-employees.delete("/unlinkphoto/:id", auth, authAdmin, employeesController.removePhotoFromEmployee);
+employees.delete("/unlinkphoto/:id", auth, employeesController.removePhotoFromEmployee);
 
-employees.post("/:id", auth, authAdmin, employeesController.updateEmployee);
+employees.post("/:id", auth, employeesController.updateEmployee);
 
-employees.delete("/:id", auth, authAdmin, employeesController.deleteEmployee);
+employees.delete("/:id", auth, employeesController.deleteEmployee);
 
 module.exports = employees;

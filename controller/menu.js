@@ -1,10 +1,6 @@
 const _ = require('lodash');
 const { Menu, validate } = require('../models/menu');
 
-/* 
-INSERT INTO `menus` VALUES (1,1,'Employee','/employee','person','This is a test',0,0,'2019-01-15 18:58:31','2019-01-15 18:58:31'),(2,0,'Admnistration','/admin','settings','Manage configuration of the system and security/access rights',0,0,'2019-01-15 20:27:21','2019-01-15 20:27:21'),(3,2,'Attendance','/attendance','access_alarm','Track employee attendance by checking them in/out through face scanning',0,0,'2019-01-15 20:30:24','2019-01-15 20:30:24');
-*/
-
 exports.createMenuItem = async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).json(error.details[0].message);
