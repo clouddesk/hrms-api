@@ -32,21 +32,30 @@ exports.attendance = async (req, res) => {
 };
 
 exports.summary = async (req, res) => {
-  const fromDate = new Date(req.body.fromDate)
-  const toDate = new Date(req.body.fromDate)
+  let fromDate = new Date(req.query.fromDate);
+  let toDate = new Date(req.query.toDate);
+  toDate.setDate(toDate.getDate() - 1)
 
-  from = fromDate.getFullYear() + '-' + fromDate.getMonth() + '-' + fromDate.getDate()
-  to = toDate.getFullYear() + '-' + toDate.getMonth() + '-' + toDate.getDate()
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
-  /**
-   * CALL filldates('2019-02-01','2019-02-28');
-   */
+  from = fromDate.toLocaleString('ka-GE', options);
+  to = toDate.toLocaleString('ka-GE', options);
+  
+  console.log(from, to)
 
-  const summaryReport = sequelize
+  from = from.split('.');
+  from = from[2] + '-' + from[1] + '-' + from[0];
+
+  to = to.split('.');
+  to = to[2] + '-' + to[1] + '-' + to[0];
+
+  console.log(from, to)
+
+  await sequelize
     .query(`CALL filldates('${from}','${to}')`)
     .then(report => {
-      console.log(report);
+      console.log(report)
+      res.send(report);
     });
 
-  res.send(summaryReport);
 };

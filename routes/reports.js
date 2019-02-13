@@ -5,7 +5,7 @@ const reportController = require("../controller/report");
 const express = require("express");
 const attendance = express.Router();
 
-// attendance.post("/attendance", auth, reportController.attendance);
-attendance.post("/attendance", auth, reportController.summary);
+attendance.get("/attendance/summary", auth, reportController.summary);
+attendance.post("/attendance", auth, reportController.attendance);
 
 module.exports = attendance;
