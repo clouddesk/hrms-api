@@ -52,7 +52,7 @@ exports.summary = async (req, res) => {
   console.log(from, to)
 
   await sequelize
-    .query(`CALL filldates('${from}','${to}')`)
+    .query(`CALL filldates('${from}','${to}','${req.query.projectId}')`)
     .then(report => {
       console.log(report)
       res.send(report);
