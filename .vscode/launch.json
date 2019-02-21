@@ -9,7 +9,16 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/index.js",
-      "env": { "vidly_jwtPrivateKey": "jwtPrivateKey" }
+      "env": {
+        "jwtPrivateKey": "jwtPrivateKey",
+        "googleMapsApiKey": "AIzaSyCPKD2tubxvBakQdgJmxX4kZDfEdwinSks",
+        "azureFaceApiKey": "e3d39b6740494052b6ea534de2fc8e04",
+        "db_name": "hrms",
+        "db_acc": "app",
+        "db_secret": "4Y3d7LJyWG0Y!",
+        "db_host": "localhost",
+        "db_port": "3306",
+      }
     }
   ]
 }

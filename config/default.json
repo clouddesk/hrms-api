@@ -1,3 +1,11 @@
 {
-    "jwtPrivateKey": ""
+    "jwtPrivateKey": "",
+    "azureFaceApiKey": "",
+    "googleMapsApiKey": "",
+    "db_name": "",
+    "db_acc": "",
+    "db_secret": "",
+    "db_host": "",
+    "db_port": "",
+    "MSCSfaceAPI_base": "https://westeurope.api.cognitive.microsoft.com/face/v1.0"
 }

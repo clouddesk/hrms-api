@@ -10,6 +10,7 @@ users.get('/me', auth, userController.getUserProfile);
 users.get('/', auth, userController.getUsers);
 
 users.post('/', auth, userController.createUser);
+// users.post('/', userController.createUser);
 
 users.post('/:id', auth, userController.updateUser);
 

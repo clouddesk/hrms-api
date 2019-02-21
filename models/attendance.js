@@ -16,7 +16,8 @@ const Attendance = sequelize.define('attendance', {
   },
   position: {
     type: Sequelize.GEOMETRY('POINT')
-  }
+  },
+  capturedPhotoFileId: Sequelize.STRING,
 });
 
 function validateAttendance(attendance) {
@@ -24,7 +25,8 @@ function validateAttendance(attendance) {
     eventTypeId: Joi.number().required(),
     position: Joi.any(),
     projectId: Joi.any(),
-    employeeId: Joi.number()
+    employeeId: Joi.number(),
+    capturedPhotoFileId: Joi.number()
   };
 
   return Joi.validate(attendance, schema);

@@ -43,11 +43,11 @@ exports.summary = async (req, res) => {
   
   console.log(from, to)
 
-  from = from.split('.');
-  from = from[2] + '-' + from[1] + '-' + from[0];
+  from = from.split('/');
+  from = from[2] + '-' + from[0] + '-' + from[1];
 
-  to = to.split('.');
-  to = to[2] + '-' + to[1] + '-' + to[0];
+  to = to.split('/');
+  to = to[2] + '-' + to[0] + '-' + to[1];
 
   console.log(from, to)
 
