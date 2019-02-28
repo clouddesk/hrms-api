@@ -25,8 +25,7 @@ const personFaceURL = (personGroupId, personId) => {
   return personGroupPersonURL(personGroupId) + personId + '/persistedFaces/';
 };
 
-/** Create a new person group with specified personGroupId, name, and user-provided userData
- */
+/* Create a new person group with specified personGroupId, name, and user-provided userData */
 exports.createPersonGroup = async (req, res) => {
   url = personGroupsURL + req.body.personGroupId;
   request.put(
@@ -36,38 +35,47 @@ exports.createPersonGroup = async (req, res) => {
       headers: getHeader()
     },
     (error, response, body) => {
-      if (error) res.json(error);
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(response);
+      }
     }
   );
 };
 
-/** Update existing person group
- */
+/* Update existing person group */
 exports.updatePersonGroup = async (req, res) => {
   url = personGroupsURL + req.params.id;
   request.patch(
     url,
     {
-      json: { name: req.body.personGroupName },
+      json: { name: req.body.name },
       headers: getHeader()
     },
     (error, response, body) => {
-      if (error) res.json(error);
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(response);
+      }
     }
   );
 };
 
-/** Delete an existing person group with specified personGroupId
- */
+/* Delete an existing person group with specified personGroupId */
 exports.deletePersonGroup = async (req, res) => {
   url = personGroupsURL + req.params.id;
-  request.delete(url, (error, response, body) => {
-    if (error) res.status(400).json(error);
+  request.delete(url, { headers: getHeader() }, (error, response, body) => {
+    if (error) {
+      res.json(error);
+    } else {
+      res.json(response);
+    }
   });
 };
 
-/** List person groups’s pesonGroupId, name, and userData.
- */
+/* List person groups’s pesonGroupId, name, and userData. */
 exports.listPersonGroup = async (req, res) => {
   url = personGroupsURL;
   request.get(url, { headers: getHeader() }, (error, response, body) => {
@@ -76,9 +84,7 @@ exports.listPersonGroup = async (req, res) => {
   });
 };
 
-/**
- * Retrieve person group name
- */
+/* Retrieve person group name */
 exports.getPersonGroup = async (req, res) => {
   url = personGroupsURL + req.params.id;
   request.get(url, { headers: getHeader() }, (error, response, body) => {
@@ -87,8 +93,7 @@ exports.getPersonGroup = async (req, res) => {
   });
 };
 
-/** Create a new person in a specified person group
- */
+/* Create a new person in a specified person group */
 exports.addPersonToPersonGroup = async (req, res) => {
   url = personGroupPersonURL(req.body.personGroupId);
   request.post(
@@ -104,39 +109,43 @@ exports.addPersonToPersonGroup = async (req, res) => {
   );
 };
 
-/** Delete an existing person from a person group
- */
+/* Delete an existing person from a person group */
 exports.deletePersonFromPersonGroup = async (req, res) => {
-  url = personGroupPersonURL(req.query.personGroupId) + req.query.personId;
+  url = personGroupPersonURL(req.query.personGroupId) + req.params.id;
   request.delete(
     url,
     {
       headers: getHeader()
     },
     (error, response, body) => {
-      if (error) res.json(error);
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(response);
+      }
     }
   );
 };
 
-/** List all persons’ information in the specified person group
- */
+/* List all persons’ information in the specified person group */
 exports.getPersonsFromPersonGroup = async (req, res) => {
-  url = personGroupPersonURL(req.body.personGroupId);
+  url = personGroupPersonURL(req.query.personGroupId);
   request.get(
     url,
     {
       headers: getHeader()
     },
     (error, response, body) => {
-      if (error) res.json(error);
-      if (body) res.json(body);
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(body);
+      }
     }
   );
 };
 
-/** Retrieve a person's name and userData, and the persisted faceIds representing the registered person face image.
- */
+/* Retrieve a person's name and userData, and the persisted faceIds representing the registered person face image. */
 exports.getPersonFromPersonGroup = async (req, res) => {
   url = personGroupPersonURL(req.body.personGroupId) + req.params.id;
   request.get(
@@ -151,8 +160,7 @@ exports.getPersonFromPersonGroup = async (req, res) => {
   );
 };
 
-/** Update name or userData of a person.
- */
+/* Update name or userData of a person. */
 exports.updatePersonOfPersonGroup = async (req, res) => {
   url = personGroupPersonURL(req.body.personGroupId) + req.params.id;
   request.patch(
@@ -167,8 +175,7 @@ exports.updatePersonOfPersonGroup = async (req, res) => {
   );
 };
 
-/** Add a face image to a person into a person group for face identification or verification
- */
+/* Add a face image to a person into a person group for face identification or verification */
 exports.addPersistedFace = async (req, res) => {
   console.log(req.query);
   url = personFaceURL(req.query.personGroupId, req.query.personId);
@@ -190,8 +197,7 @@ exports.addPersistedFace = async (req, res) => {
   );
 };
 
-/** Retrieve person face information. The persisted person face is specified by its personGroupId, personId and persistedFaceId.
- */
+/* Retrieve person face information. The persisted person face is specified by its personGroupId, personId and persistedFaceId. */
 exports.getPersistedFace = async (req, res) => {
   url =
     personFaceURL(req.body.personGroupId, req.body.personId) + req.params.id;
@@ -207,24 +213,26 @@ exports.getPersistedFace = async (req, res) => {
   );
 };
 
-/** Delete a face from a person in a person group.
- */
+/* Delete a face from a person in a person group. */
 exports.deletePersistedFace = async (req, res) => {
   url =
-    personFaceURL(req.body.personGroupId, req.body.personId) + req.params.id;
+    personFaceURL(req.query.personGroupId, req.query.personId) + req.query.persistedFaceId;
   request.delete(
     url,
     {
       headers: getHeader()
     },
     (error, response, body) => {
-      if (error) res.json(error);
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(response);
+      }
     }
   );
 };
 
-/** Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
- */
+/* Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes. */
 exports.detectPerson = async (req, res) => {
   url = personDetectURL;
   request.post(
@@ -246,8 +254,7 @@ exports.detectPerson = async (req, res) => {
   );
 };
 
-/** Verify whether two faces belong to a same person or whether one face belongs to a person.
- */
+/* Verify whether two faces belong to a same person or whether one face belongs to a person. */
 exports.verifyPerson = async (req, res) => {
   url = personVerifyURL;
   console.log(req.body);

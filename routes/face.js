@@ -22,7 +22,7 @@ face.delete("/persongroupsperson/:id", auth, faceController.deletePersonFromPers
 
 face.post("/persistedface", auth, upload.single("file"), faceController.addPersistedFace);
 face.get("/persistedface/:id", auth, faceController.getPersistedFace);
-face.delete("/persistedface/:id", auth, faceController.deletePersistedFace);
+face.delete("/persistedface/", auth, faceController.deletePersistedFace);
 face.post("/detectperson", auth, upload.single("file"), faceController.detectPerson);
 face.post("/verifyperson", auth, faceController.verifyPerson);
 
